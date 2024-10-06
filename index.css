@@ -1,0 +1,104 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    background-color: burlywood
+}
+
+h1 {
+    font-size: 65px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 50px;
+    padding-top: 100px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    height: 20px;
+}
+
+h2 {
+    font-size: 51px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-weight: lighter;
+    padding-right: 50px;
+    padding-top: 0px;
+    height: 20px;
+}
+
+h3 {
+    font-size: 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+}
+
+p {
+    font-size: 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+;
+}
+
+nav {
+    background-image: url(img/NavBar.jpeg);
+    background-size: cover;
+    text-align: right;
+    background-position: center;
+    height: 800px;
+}
+
+.einleitung {
+    background-color:#2C73A1;
+    padding: 40px;
+}
+
+.zweiteilung {
+    display:flex;
+    flex-direction: row;
+    margin-top: 40px;
+}
+
+.zweiteilung p, .zweiteilung h3, .schlusswort p, .schlusswort h3, .legende p {
+    color: black;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.zweiteilung h3, .schlusswort h3 {
+    margin-top: 50px;
+}
+
+.tabelleContainer img {
+    width: 80%;
+}
+
+.legende {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.legende img {
+    width: 100px;
+    height: 5px;
+    padding: 10px;
+}
+
+footer {
+    background-color: #2C73A1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 170px;
+}
+
+footer p {
+    font-weight: lighter;
+}
+
+.schlusswort {
+    margin-bottom: 150px;
+}

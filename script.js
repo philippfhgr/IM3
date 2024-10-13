@@ -1,64 +1,65 @@
 // URL der API, von der die Daten abgerufen werden sollen
 const apiUrl = 'https://etl.mmp.li/RayWatch/etl/unload.php';
 
-// Koordinaten für die UV-Index-Abfrage
-const targetCoordinates = { longitude: 8.540212, latitude: 47.378696 }; // Zürich
+// Koordinaten für die Standorte
+const locations = {
+    "Zürich": [8.540212, 47.378696],
+    "Uetliberg": [8.492068, 47.349584],
+    "Chur": [9.531958, 46.850823],
+    "Brambruesch": [9.516278, 46.829063],
+    "Laax": [9.260719, 46.809173],
+    "Vorab Gletscher": [9.163697, 46.879050],
+    "Grindelwald": [8.040337, 46.624643],
+    "Eigergletscher": [7.987040, 46.568271],
+    "Lago Maggiore": [8.647745, 45.964244],
+    "Dufourspitze": [7.867582, 45.937504]
+};
 
 // Funktion zum Abrufen von Daten von der API
 async function fetchData() {
-    try {
-        // Daten von der API abrufen
-        const response = await fetch(apiUrl);
+    console.log("fetchData wurde aufgerufen");
 
-        // Überprüfen, ob die Antwort erfolgreich war (Status 200-299)
+    try {
+        const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`HTTP-Fehler! Status: ${response.status}`);
         }
-
-        // Die Antwort als JSON parsen
         const data = await response.json();
-        console.log(data); // Überprüfen der abgerufenen Daten
+        console.log("API-Daten wurden abgerufen:", data);
 
-        // Diagramm initialisieren mit den abgerufenen Daten
-        createChart(data);
+        // Erstelle Liniendiagramme für alle Standorte
+        Object.keys(locations).forEach(locationName => {
+            createLineChart(data, locationName, locations[locationName]);
+        });
     } catch (error) {
-        // Fehler behandeln
         console.error('Fehler beim Abrufen der Daten:', error);
     }
 }
 
-
-
-// Funktion zum Erstellen des Diagramms
-function createChart(apiData) {
-    // Zugriff auf das letzte Element der Hauptstruktur, das die Daten enthält
-    const uvDataArray = apiData[5]; // Das ist das Array von UV-Daten
-    console.log(uvDataArray); // Überprüfen der UV-Daten
+// Funktion zum Erstellen eines Liniendiagramms
+function createLineChart(apiData, locationName, coordinates) {
+    // Filtere die UV-Daten für den aktuellen Standort
+    const uvDataArray = apiData.filter(item => 
+        parseFloat(item.longitude) === coordinates[0] && 
+        parseFloat(item.latitude) === coordinates[1]
+    );
 
     // Manuelle Erstellung der Labels für die letzten 24 Stunden
-    const labels = Array.from({ length: 24 }, (_, i) => {
+    const labels = Array.from({ length: uvDataArray.length }, (_, i) => {
         const hour = new Date();
-        hour.setHours(hour.getHours() - (23 - i));
+        hour.setHours(hour.getHours() - (uvDataArray.length - 1 - i));
         return hour.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     });
 
-    // Filtern der UV-Daten basierend auf den Koordinaten
-    const uvIndexData = uvDataArray
-    .filter(item => 
-        parseFloat(item.longitude) === targetCoordinates.longitude && // Überprüfen, ob die longitude übereinstimmt
-        parseFloat(item.latitude) === targetCoordinates.latitude // Überprüfen, ob die latitude übereinstimmt
-    )
-    .slice(-24) // Nur die letzten 24 Einträge verwenden
-    .map(item => parseFloat(item.uvindex)); // Hier extrahieren wir nur den UV-Index
-
-console.log(uvIndexData); // Überprüfen der UV-Index-Daten
+    // Extrahiere die UV-Index-Daten
+    const uvIndexData = uvDataArray.map(item => parseFloat(item.uvindex));
 
     // Daten für das Diagramm aufbereiten
     const chartData = {
         labels: labels,
         datasets: [{
-            label: 'UV-Index in Zürich',
-            data: uvIndexData, // Hier nehmen wir die extrahierten UV-Index-Daten
+            label: `UV-Index in ${locationName}`,
+            data: uvIndexData,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -72,8 +73,11 @@ console.log(uvIndexData); // Überprüfen der UV-Index-Daten
     };
 
     // Diagramm initialisieren
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, config);
+    const chartContainer = document.createElement('canvas');
+    chartContainer.id = `chart-${locationName.replace(/\s+/g, '-')}`; // ID für das Canvas-Element
+    document.getElementById('chart-container').appendChild(chartContainer);
+    const ctx = chartContainer.getContext('2d');
+    new Chart(ctx, config);
 }
 
 // Funktion aufrufen

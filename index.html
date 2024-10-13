@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UV-Index</title>
     <link rel="stylesheet" href="index.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -30,10 +30,9 @@
     <p>Die Winter-Saison bringt nicht nur eisige Temperaturen, sondern auch eine erhöhte UV-Strahlenbelastung, besonders in den Bergen. Wer sicher in den Bergen unterwegs sein möchte, sollte sich der Gefahren durch die Sonne bewusst sein und entsprechende Schutzmaßnahmen ergreifen.
     </p></div>
 
-<div class="tabelleContainer"><img src="img/tabelle.png" alt="UV-Index Tabelle"></div>
-</div>
+<div class="tabelleContainer"><img src="img/tabelle.png" alt="UV-Index Tabelle"></div></div>
 
-<canvas id="myChart" width="400" height="200"></canvas>
+<div id="chart-container"></div>
 
 <div class="legende"><img src="img/Line 2.png" alt="Legende"><p>UV-Index</p></div>
 
@@ -55,6 +54,7 @@
 <footer>
     <p>Impressum | Über uns | 2024</p>    
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js" defer></script>
 
 </body>

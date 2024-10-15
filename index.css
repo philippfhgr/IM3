@@ -2,7 +2,7 @@ body {
     margin: 0px;
     padding: 0px;
     border: 0px;
-    background-color: mistyrose;
+    background-image: url(img/hintergrund.webp);
 }
 
 h1 {
@@ -105,6 +105,13 @@ footer p {
 
 .schlusswort {
     margin-bottom: 150px;
+}
+
+#chart-container {
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2, 5fr);
+
 }
 
 /* Media Queries für mobile Geräte */

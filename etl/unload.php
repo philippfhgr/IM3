@@ -27,7 +27,7 @@ try {
             SELECT id, longitude, latitude, time, uvindex
             FROM uv_data
             WHERE longitude = :longitude AND latitude = :latitude
-            ORDER BY time DESC
+            ORDER BY time ASC
         ");
 
         // Füllt die Anfrage mit den Koordinaten

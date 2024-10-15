@@ -2,7 +2,9 @@ body {
     margin: 0px;
     padding: 0px;
     border: 0px;
-    background-color: mistyrose
+    background-image: url(img/hintergrund.webp);
+    background-size: cover;
+    background-position: center;
 }
 
 h1 {
@@ -42,7 +44,7 @@ p {
 }
 
 nav {
-    background-image: url(img/NavBar.jpeg);
+    background-image: url(img/NavBar.webp);
     background-size: cover;
     text-align: right;
     background-position: center;
@@ -72,6 +74,7 @@ nav {
 
 .tabelleContainer img {
     width: 80%;
+    margin-right: 40px;
 }
 
 .legende {
@@ -102,4 +105,3 @@ footer p {
 .schlusswort {
     margin-bottom: 150px;
 }
-

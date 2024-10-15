@@ -96,7 +96,7 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
     const chartData = {
         labels: labels,
         datasets: [{
-            label: `UV-Index ${locationName}`,
+            label: '',
             data: uvIndexData,
             fill: false,
             borderColor: 'rgb(255, 0, 0)',
@@ -109,10 +109,16 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
         type: 'line',
         data: chartData,
         options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: `UV-Index für ${locationName}`
+                }
+            },
             scales: {
                 y: {
                     min: 0, // Minimum-Wert für die Y-Achse
-                    max: 11, // Maximum-Wert für die Y-Achse
+                    max: 12, // Maximum-Wert für die Y-Achse
                     ticks: {
                         stepSize: 1 // Schrittgröße für die Y-Achsen-Ticks
                     }

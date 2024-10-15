@@ -28,7 +28,7 @@ function fetchUvData($latitude, $longitude) {
     return json_decode($response, true);
 }
 
-// Array mit den Koordinaten (Stadt => [Latitude, Longitude])
+// Array mit den Koordinaten (Stadt => [Longitude, Latitude])
 $locations = [
     "Zürich" => [8.540212, 47.378696],
     "Uetliberg" => [8.492068, 47.349584],
@@ -55,11 +55,11 @@ $stmt = $pdo->prepare($sql);
 
 // Schleife über alle Koordinaten und Abruf der UV-Daten
 foreach ($locations as $location => $coords) {
-    $latitude = $coords[0];
-    $longitude = $coords[1];
+    $longitude = $coords[0];
+    $latitude = $coords[1];
     
     // Abrufen der UV-Daten
-    $uvData = fetchUvData($latitude, $longitude);
+    $uvData = fetchUvData($longitude, $latitude);
     
     if ($uvData && isset($uvData['now'])) {
         // Ausgabe der Ergebnisse für jede Stadt

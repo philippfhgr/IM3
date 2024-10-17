@@ -92,40 +92,47 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
     const uvIndexData = recentUvDataArray.map(item => parseFloat(item.uvindex));
     console.log(`${locationName}: UV-Index-Daten:`, uvIndexData);
 
-    // Daten für das Diagramm aufbereiten
-    const chartData = {
-        labels: labels,
-        datasets: [{
-            label: '',
-            data: uvIndexData,
-            fill: false,
-            borderColor: 'rgb(255, 0, 0)',
-            tension: 0.1
-        }]
-    };
+   // Daten für das Diagramm aufbereiten
+const chartData = {
+    labels: labels,
+    datasets: [{
+        label: '',
+        data: uvIndexData,
+        fill: false,
+        borderColor: 'rgb(255, 0, 0)',
+        tension: 0.1
+    }]
+};
 
-    // Konfiguration für das Diagramm mit Y-Achsen-Einstellungen
-    const config = {
-        type: 'line',
-        data: chartData,
-        options: {
-            plugins: {
-                title: {
-                    display: true,
-                    text: `UV-Index für ${locationName}`
-                }
+// Konfiguration für das Diagramm mit Y-Achsen-Einstellungen
+const config = {
+    type: 'line',
+    data: chartData,
+    options: {
+        plugins: {
+            legend: {
+                display: false // Legende wird ausgeblendet
             },
-            scales: {
-                y: {
-                    min: 0, // Minimum-Wert für die Y-Achse
-                    max: 12, // Maximum-Wert für die Y-Achse
-                    ticks: {
-                        stepSize: 1 // Schrittgröße für die Y-Achsen-Ticks
-                    }
+            title: {
+                display: true,
+                text: `UV-Index für ${locationName}`
+            }
+        },
+        scales: {
+            y: {
+                min: 0, // Minimum-Wert für die Y-Achse
+                max: 14, // Maximum-Wert für die Y-Achse
+                ticks: {
+                    stepSize: 1 // Schrittgröße für die Y-Achsen-Ticks
                 }
             }
         }
-    };
+    }
+};
+
+// Diagramm erstellen
+const myChart = new Chart(document.getElementById('myChart'), config);
+
 
     // Überprüfe, ob ein Canvas-Element für diesen Standort bereits existiert
     let chartContainer = document.getElementById(`chart-${locationName.replace(/\s+/g, '-')}`);

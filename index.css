@@ -3,6 +3,8 @@ body {
     padding: 0px;
     border: 0px;
     background-image: url(img/hintergrund.webp);
+    background-size: cover;
+    background-position: center;
 }
 
 h1 {
@@ -54,8 +56,8 @@ nav {
 }
 
 .zweiteilung {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     margin-top: 40px;
 }
 
@@ -74,8 +76,15 @@ nav {
     margin-top: 50px;
 }
 
+.tabelleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .tabelleContainer img {
-    width: 100%;
+    max-width: 90%;
+    height: auto;
 }
 
 .legende {
@@ -107,20 +116,90 @@ footer p {
     margin-bottom: 150px;
 }
 
-#chart-container {
-    width: 90%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 60px;
-    column-gap: 40px;
-    margin: 40px;
-    justify-content: center;
+.auflistung {
+    display: flex;
+    flex-direction: row;
 }
+
+.auflistung p {
+    margin-top: 5px;
+}
+
+#chart-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 100%;
+    margin: 40px auto;
+}
+
+.chart-wrapper {
+    flex: 1 1 calc(50% - 20px);
+    margin-bottom: 40px;
+    max-width: 50%;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
 
 .chart-buttons {
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-around;
+}
+
+button {
+  background-color: #2C73A1;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #1E5F8B;
+}
+
+button:active {
+  background-color: #1A4A6E;
+}
+
+
+@media (max-width: 1095px) {
+    h1 {
+        height: 90px;
+    }
+}
+
+@media (max-width: 893px) {
+    h2 {
+        height: 70px;
+    }
+
+    #chart-container {
+        flex-direction: column;
+    }
+
+    .chart-wrapper {
+        max-width: 100%;
+    }
+
+    .tabelleContainer {
+        margin-top: 40px;
+    }
+
+    .auflistung {
+        flex-direction: column;
+    }
 }
 
 /* Media Queries für mobile Geräte */
@@ -130,11 +209,13 @@ footer p {
         font-size: 45px;
         padding: 30px;
         padding-top: 60px;
+        height: 40px;
     }
 
     h2 {
         font-size: 35px;
         padding-right: 30px;
+        height: 20px;
     }
 
     h3 {
@@ -151,12 +232,19 @@ footer p {
     }
 
     .zweiteilung {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        margin-top: 20px;
+
+    }
+
+    .tabelleContainer {
         margin-top: 20px;
     }
 
     .tabelleContainer img {
-        margin: 20px;
+        justify-self: center;
     }
 
     .legende img {
@@ -167,6 +255,10 @@ footer p {
     footer {
         height: 120px;
         padding: 20px;
+    }
+
+    .schlusswort {
+        margin-bottom: 70px;
     }
 }
 
@@ -181,6 +273,7 @@ footer p {
     h2 {
         font-size: 28px;
         padding-right: 20px;
+        height: 40px;
     }
 
     h3 {
@@ -213,5 +306,9 @@ footer p {
     footer {
         height: 100px;
         padding: 10px;
+    }
+
+    .schlusswort {
+        margin-bottom: 50px;
     }
 }

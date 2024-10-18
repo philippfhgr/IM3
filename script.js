@@ -25,6 +25,7 @@ const imagePaths = [
     'img/img9.png',
     'img/img10.png',
     'img/img11.png',
+    'img/img11.png',
 ];
 
 let images = [];
@@ -75,7 +76,7 @@ const imagePlugin = {
         const ctx = chart.ctx;
         const currentValue = Math.round(chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1]);
 
-        let imageToDraw = images[0]; // Standardbild initialisieren (hier das erste Bild als Beispiel)
+        let imageToDraw = images[0]; // Standardbild initialisieren
         if (currentValue >= 1 && currentValue <= images.length) {
             imageToDraw = images[currentValue - 1]; // Bilder werden bei 0 indiziert
         }
@@ -91,9 +92,40 @@ const imagePlugin = {
     }
 };
 
-// Funktion zum Erstellen eines Liniendiagramms
+let lastClickedButton = null;  // Variable zum Speichern des zuletzt geklickten Buttons
+
+// Funktion zum Erstellen der Buttons
+function createButton(text, startIndex, buttonsContainer, uvDataArray, locationName, updateChart, chartLastClickedButton) {
+    const button = document.createElement('button');
+    button.innerText = text;
+
+    // Event-Handler für den Klick auf den Button
+    button.onclick = () => {
+        // Wenn es einen vorherigen Button für diese Chart gibt, setze ihn zurück
+        if (chartLastClickedButton[locationName]) {
+            chartLastClickedButton[locationName].style.backgroundColor = ''; // Hintergrundfarbe auf Standard zurücksetzen
+            chartLastClickedButton[locationName].style.color = '';           // Textfarbe zurücksetzen
+        }
+
+        // Setze den geklickten Button auf die neue Farbe
+        button.style.backgroundColor = '#FFFFFF';
+        button.style.color = '#2C73A1';
+
+        // Speichere den aktuellen Button als den zuletzt geklickten für diese Chart
+        chartLastClickedButton[locationName] = button;
+
+        // Aktualisiere das Diagramm mit den entsprechenden Daten
+        updateChart(uvDataArray, locationName, startIndex);
+    };
+
+    buttonsContainer.appendChild(button);  // Füge den Button in den Container ein
+    return button;  // Gib den Button zurück, um ihn für spätere Aktionen zu nutzen
+}
+
+// Funktion zum Erstellen des LineCharts
 function createLineChart(uvDataArrays, locationName, coordinates) {
     let uvDataArray = [];
+    const chartLastClickedButton = {};  // Objekt zur Speicherung des letzten geklickten Buttons für jede Chart
 
     // Filtere die UV-Daten basierend auf den Koordinaten
     uvDataArrays.forEach(dataArray => {
@@ -111,7 +143,7 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
 
     if (uvDataArray.length === 0) {
         console.warn(`Keine UV-Daten für ${locationName} vorhanden!`);
-        return; // Hier wird der Rückgabewert korrekt verwendet
+        return;
     }
 
     // Erstelle ein Wrapper-Div, um das Chart und die Buttons zu gruppieren
@@ -129,17 +161,10 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
     buttonsContainer.className = 'chart-buttons';
     chartWrapper.appendChild(buttonsContainer); // Buttons dem Wrapper hinzufügen (unterhalb des Canvas)
 
-    // Funktion zum Erstellen der Buttons
-    const createButton = (text, startIndex) => {
-        const button = document.createElement('button');
-        button.innerText = text;
-        button.onclick = () => updateChart(uvDataArray, locationName, startIndex);
-        buttonsContainer.appendChild(button);
-    };
-
-    createButton('Letzte 24 Stunden', -24);
-    createButton('Letzte 48 Stunden', -48);
-    createButton('Letzte 72 Stunden', -72);
+    // Buttons erstellen (24 Stunden, 48 Stunden, 72 Stunden)
+    const button24h = createButton('Letzte 24 Stunden', -24, buttonsContainer, uvDataArray, locationName, updateChart, chartLastClickedButton);
+    createButton('Letzte 48 Stunden', -48, buttonsContainer, uvDataArray, locationName, updateChart, chartLastClickedButton);
+    createButton('Letzte 72 Stunden', -72, buttonsContainer, uvDataArray, locationName, updateChart, chartLastClickedButton);
 
     let chartInstance;
 
@@ -147,8 +172,11 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
     const initialData = uvDataArray.slice(-24);
     updateChart(initialData, locationName, 0);
 
+    // Standardmäßig den Button für 24 Stunden "klicken"
+    button24h.click();
+
     // Chart rendern
-    function renderChart(data) {
+    function renderChart(data, locationName) { // locationName als Parameter hinzufügen
         const labels = data.map(item => new Date(item.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
         const uvIndexData = data.map(item => parseFloat(item.uvindex));
 
@@ -173,7 +201,7 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: `UV-Index für ${locationName}`,
+                        text: `UV-Index für ${locationName}`, // Hier wird locationName verwendet
                         font: { size: 20, weight: 'bold' },
                         color: 'black',
                         align: 'start',
@@ -208,7 +236,7 @@ function createLineChart(uvDataArrays, locationName, coordinates) {
     // Update Chart-Funktion
     function updateChart(uvDataArray, locationName, startIndex) {
         const slicedData = uvDataArray.slice(startIndex); // Slice-Daten entsprechend dem Button
-        renderChart(slicedData); // Chart mit den gesliced Daten neu rendern
+        renderChart(slicedData, locationName); // Passiere locationName an renderChart
     }
 }
 
